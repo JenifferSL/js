@@ -1,0 +1,127 @@
+let xBolinha = 390;
+let yBolinha = 300;
+let diametro = 25;
+
+let velocidadeXBolinha = 5;
+let velocidadeYBolinha = 5;
+let raio = diametro /2;
+
+let xRaquete = 5;
+let yRaquete = 250;
+
+let xOponente = 780;
+let yOponente = 250;
+
+let wRaquetes = 10;
+let hRaquetes = 130;
+
+let velocidadeXOponente = 4
+let velocidadeYOponente = 4
+
+let colidiu = false;
+
+let meusPontos = 0;
+let oponentePontos = 0;
+
+
+
+function setup() {
+    createCanvas(800, 700);
+}
+
+function draw() {
+    background(0);
+  
+  mostrarBolinha();
+  movimentoBolinha();
+  colisaoBorda();
+  mostrarRaquete();
+  movimentaRaquete();
+  colisaoRaquete(xRaquete, yRaquete);
+  mostrarOponente();
+  movimentoOponente();
+  colisaoRaqueteB(xOponente, yOponente);
+  placar();
+  marcandoPontos();
+}
+  
+function mostrarBolinha() {
+    fill('white')
+    circle(xBolinha, yBolinha, diametro);
+}
+
+
+function movimentoBolinha() {
+   xBolinha += velocidadeXBolinha;
+   yBolinha += velocidadeYBolinha;
+  
+}
+
+function colisaoBorda() {
+  if (xBolinha + raio > width || xBolinha - raio < 0) {
+        velocidadeXBolinha *= -1;
+    }
+    if (yBolinha + raio > height || yBolinha - raio < 0) {
+        velocidadeYBolinha *= -1;}
+}
+
+function mostrarRaquete() {
+  fill('blue')
+  rect(xRaquete, yRaquete, wRaquetes, hRaquetes);
+  
+}
+
+function movimentaRaquete() {
+  if(keyIsDown(UP_ARROW)) {
+    yRaquete -= 10;
+  }
+  if(keyIsDown(DOWN_ARROW)) {
+    yRaquete += 10;
+  }
+}
+
+function colisaoRaquete() {
+  if(xBolinha - raio < xRaquete + wRaquetes && yBolinha - raio < yRaquete + hRaquetes && yBolinha + raio > yRaquete)
+    velocidadeXBolinha *= -1;
+}
+
+
+function mostrarOponente() {
+  fill('red')
+  rect(xOponente, yOponente, wRaquetes, hRaquetes);
+  
+}
+
+function movimentoOponente(){
+  velocidadeYOponente = yBolinha - yOponente - wRaquetes /2 - 30
+  yOponente += velocidadeYOponente
+}
+
+function colisaoRaqueteB(xOponente, yOponente){ 
+colidiu = collideRectCircle(xOponente, yOponente, wRaquetes, hRaquetes, xBolinha, yBolinha, raio);
+  if (colidiu){velocidadeXBolinha *= -1}
+}
+
+function placar(){
+  textSize(30);
+  fill('blue');
+  text(meusPontos,350, 100)  ;
+  fill('red')
+  text(oponentePontos, 450, 100);
+  
+}
+
+function marcandoPontos(){
+  
+  if (xBolinha > 786){
+    meusPontos += 1
+  }
+  if (xBolinha < 15){
+    oponentePontos += 1
+  }
+  
+}
+
+
+
+
